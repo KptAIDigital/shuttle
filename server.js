@@ -19,9 +19,14 @@ async function initDb(){
   }
   if(!(await Q("SELECT 1 FROM pickups LIMIT 1")).rowCount)
     await Q(`INSERT INTO pickups(sort,name,time,free_text) VALUES (1,'BIG C ราชบุรี','07:00 น.',false),(2,'7-11 ทางเข้าวัดหนองหนอย','07:00 น.',false),(3,'เทศบาลตำบลเขางู','07:00 น.',false),(4,'อื่น ๆ (โปรดระบุ)','',true)`);
-  const {ADMIN_EMAIL:e,ADMIN_PASSWORD:p}=process.env;
-  if(e&&p&&!(await Q("SELECT 1 FROM users LIMIT 1")).rowCount)
-    await Q("INSERT INTO users(name,email,password_hash,role) VALUES('Admin',$1,$2,'Admin')",[e.toLowerCase(),hash(p)]);
+  const e=(process.env.ADMIN_EMAIL||"").trim().toLowerCase(),p=(process.env.ADMIN_PASSWORD||"").trim();
+  if(e&&p){
+    const empty=!(await Q("SELECT 1 FROM users LIMIT 1")).rowCount;
+    // สร้าง Admin คนแรก หรือรีเซ็ตรหัสผ่านเมื่อตั้ง RESET_ADMIN=1 (ลบค่านี้ออกหลังใช้งานแล้ว)
+    if(empty||process.env.RESET_ADMIN==="1")
+      await Q(`INSERT INTO users(name,email,password_hash,role) VALUES('Admin',$1,$2,'Admin')
+        ON CONFLICT(email) DO UPDATE SET password_hash=EXCLUDED.password_hash,role='Admin',active=true`,[e,hash(p)]);
+  }
 }
 
 /* ---------- auth ---------- */
@@ -61,7 +66,7 @@ app.post("/api/submit",limiter(10,60000),A(async(q,r)=>{
 app.get(["/admin","/admin/"],(_,r)=>r.sendFile(path.join(__dirname,"private","admin.html")));
 app.post("/admin/api/login",limiter(8,60000),A(async(q,r)=>{
   const u=(await Q("SELECT * FROM users WHERE email=$1 AND active",[String(q.body.email||"").trim().toLowerCase()])).rows[0];
-  if(!u||!verify(String(q.body.password||""),u.password_hash))return r.status(401).json({error:"อีเมลหรือรหัสผ่านไม่ถูกต้อง"});
+  if(!u||!verify(String(q.body.password||"").trim(),u.password_hash))return r.status(401).json({error:"อีเมลหรือรหัสผ่านไม่ถูกต้อง"});
   const v=Buffer.from(JSON.stringify({id:u.id,name:u.name,role:u.role,exp:Date.now()+12*3600e3})).toString("base64url");
   r.setHeader("Set-Cookie",`sid=${v}.${sign(v)}; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=43200`);r.json({name:u.name,role:u.role});
 }));
