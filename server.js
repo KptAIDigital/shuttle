@@ -27,6 +27,7 @@ async function initDb(){
       await Q(`INSERT INTO users(name,email,password_hash,role) VALUES('Admin',$1,$2,'Admin')
         ON CONFLICT(email) DO UPDATE SET password_hash=EXCLUDED.password_hash,role='Admin',active=true`,[e,hash(p)]);
   }
+  console.log("[admin] env_email="+(e||"(ไม่ได้ตั้ง)")+" env_password_set="+!!p+" reset="+(process.env.RESET_ADMIN==="1")+" users="+JSON.stringify((await Q("SELECT email,role,active FROM users")).rows));
 }
 
 /* ---------- auth ---------- */
