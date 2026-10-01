@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="th"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#e8141c"><meta name="robots" content="noindex,nofollow">
+<title>Dashboard รถรับ-ส่งพนักงาน</title>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--red:#e8141c;--red-d:#c50e15;--red-t:#fff1f1;--red-l:#f6a3a6;--ink:#2b2b2b;--mute:#8a8a8a;--gray:#ececec;--yellow:#ffd23f;--ok:#0f9d58}
+*{box-sizing:border-box}
+body{margin:0;background:var(--gray);color:var(--ink);font-family:'Prompt',system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-text-size-adjust:100%}
+[hidden]{display:none!important}
+.logo{width:46px;height:46px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 4px 12px #0003;flex:0 0 46px}
+.logo svg{width:26px;height:26px;color:var(--red)}
+/* login */
+#login{min-height:100vh;background:var(--red);display:grid;place-items:center;padding:20px}
+.lc{position:relative;background:#fff;border-radius:24px;padding:28px 22px 20px;width:100%;max-width:400px;box-shadow:0 18px 34px -10px #0007;text-align:center}
+.lc .logo{margin:-58px auto 12px;width:64px;height:64px}.lc .logo svg{width:36px;height:36px}
+.lc h1{margin:0;color:var(--red);font-size:1.6rem}.lc p{margin:2px 0 16px;color:#666;font-size:.86rem}
+.lc label{display:block;text-align:left;font-size:.86rem;font-weight:500;margin:10px 0 4px}
+/* shell */
+header{background:var(--red);color:#fff;padding:max(14px,env(safe-area-inset-top)) 14px 56px}
+.top{max-width:1150px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.top h1{margin:0;font-size:1.15rem;line-height:1.25}.top small{opacity:.9;font-size:.78rem}
+.who{margin-left:auto;text-align:right;font-size:.78rem;line-height:1.3}
+.tabs{max-width:1150px;margin:12px auto 0;display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.tabs button{flex:0 0 auto;border:1.5px solid #fff8;background:transparent;color:#fff;font:inherit;font-weight:500;font-size:.88rem;padding:6px 15px;border-radius:999px;cursor:pointer}
+.tabs button.on{background:#fff;color:var(--red);border-color:#fff}
+.wrap{max-width:1150px;margin:-38px auto 0;padding:0 10px calc(24px + env(safe-area-inset-bottom))}
+.card{background:#fff;border-radius:20px;box-shadow:0 14px 30px -12px #0005;padding:16px;margin-bottom:12px}
+.card h2{margin:0 0 4px;font-size:1.15rem;color:var(--red)}.card h3{margin:0 0 10px;font-size:.98rem}
+.sub{color:var(--mute);font-size:.84rem;margin:0 0 12px}
+/* controls */
+input,select{font:inherit;font-size:16px;min-height:46px;padding:8px 13px;border:1.5px solid var(--red);border-radius:999px;background:#fff;color:var(--ink);width:100%}
+input:focus,select:focus{outline:none;box-shadow:0 0 0 4px #e8141c26}
+input[type=checkbox]{width:20px;min-height:20px;accent-color:var(--red)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 18px;border-radius:999px;background:var(--red);color:#fff;font:inherit;font-weight:600;font-size:.9rem;border:1.5px solid var(--red);cursor:pointer;text-decoration:none;white-space:nowrap}
+.btn:hover{background:var(--red-d)}.btn.o{background:#fff;color:var(--red)}.btn.o:hover{background:var(--red-t)}.btn.s{min-height:36px;padding:0 14px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.rb{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+.seg{display:flex;border:1.5px solid var(--red);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:#fff;color:var(--red);font:inherit;font-weight:600;padding:8px 16px;cursor:pointer}.seg button.on{background:var(--red);color:#fff}
+.nav{display:flex;align-items:center;gap:6px}.nav b{min-width:150px;text-align:center;font-size:.95rem}
+.ib{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--red);background:#fff;color:var(--red);font-size:1.2rem;cursor:pointer;line-height:1}
+.sp{flex:1}
+/* stats & charts */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
+.stat{border:1.5px solid var(--red);border-radius:14px;padding:10px 12px}.stat.m{background:var(--red);color:#fff}
+.stat b{display:block;font-size:1.65rem;line-height:1.2;color:var(--red);font-variant-numeric:tabular-nums}.stat.m b{color:#fff}.stat span{font-size:.8rem}
+.grid{display:grid;gap:12px}
+.bars{display:flex;align-items:flex-end;gap:4px;height:150px;overflow-x:auto;padding-top:18px}
+.bars div{flex:1 0 22px;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;font-size:.68rem;color:#666}
+.bars i{display:block;width:100%;max-width:34px;background:var(--red);border-radius:6px 6px 0 0;min-height:2px}
+.bars em{font-style:normal;font-weight:600;color:var(--red-d)}
+.hb{margin:7px 0;font-size:.86rem}.hb .l{display:flex;justify-content:space-between;gap:8px}.hb .l b{color:var(--red)}
+.hb .t{height:10px;background:var(--red-t);border-radius:99px;overflow:hidden;margin-top:3px}.hb .t i{display:block;height:100%;background:var(--red);border-radius:99px}
+/* tables */
+.tw{overflow:auto;border:1.5px solid #f0d0d1;border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{padding:9px 11px;text-align:left;border-bottom:1px solid #f3e3e3;vertical-align:middle}
+th{background:var(--red);color:#fff;font-weight:600;white-space:nowrap}
+tbody tr:nth-child(even){background:#fffafa}tbody tr:last-child td{border:0}
+.nw{white-space:nowrap}.pk{background:var(--red-t);color:var(--red-d);border:1px solid var(--red-l);border-radius:99px;padding:1px 10px;font-size:.8rem;white-space:nowrap}
+td input[type=text]{min-height:38px;padding:4px 10px;font-size:15px}
+.empty{padding:30px;text-align:center;color:var(--mute)}
+.msg{font-size:.88rem;margin:8px 0;min-height:1.3em}.err{color:var(--red-d)}.ok{color:var(--ok)}
+@media (max-width:760px){
+  .tw.cards{border:0;overflow:visible}.cards table,.cards thead,.cards tbody,.cards tr,.cards td{display:block;width:100%}.cards thead{display:none}
+  .cards tbody tr{border:1.5px solid #f0d0d1;border-radius:14px;padding:8px 12px;margin-bottom:9px;background:#fff!important}
+  .cards td{border:0;padding:2px 0;display:flex;gap:10px;white-space:normal}.cards td::before{content:attr(data-l);flex:0 0 84px;color:var(--mute);font-size:.78rem;padding-top:1px}
+  .nav b{min-width:0;flex:1}.rb .sp{display:none}
+}
+@media (min-width:761px){.stats{grid-template-columns:repeat(4,1fr)}.g2{grid-template-columns:1fr 1fr}.wrap{padding:0 16px 30px}.card{padding:22px 24px}}
+:focus-visible{outline:3px solid var(--yellow);outline-offset:2px}
+</style></head><body>
+<svg hidden><symbol id="bus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="3"/><path d="M3 11h18M7 20v-3M17 20v-3"/></symbol></svg>
+
+<section id="login" hidden><form class="lc" id="lf">
+  <div class="logo"><svg><use href="#bus"/></svg></div>
+  <h1>Dashboard รถรับ-ส่ง</h1><p>สำหรับผู้ดูแลระบบและ HR</p>
+  <label for="em">อีเมล</label><input id="em" type="email" autocomplete="username" required>
+  <label for="pw">รหัสผ่าน</label><input id="pw" type="password" autocomplete="current-password" required>
+  <div class="msg err" id="lm"></div>
+  <button class="btn" style="width:100%;min-height:50px">เข้าสู่ระบบ</button>
+  <p style="margin:14px 0 0"><a href="/" style="color:var(--red);font-weight:600;font-size:.86rem">กลับไปหน้าลงทะเบียน</a></p>
+</form></section>
+
+<section id="app" hidden>
+<header><div class="top"><div class="logo"><svg><use href="#bus"/></svg></div>
+  <div><h1>รถรับ-ส่งพนักงาน</h1><small>Dashboard</small></div>
+  <div class="who"><span id="who"></span><br><a href="#" id="out" style="color:#fff">ออกจากระบบ</a></div></div>
+  <nav class="tabs" id="tabs"></nav></header>
+<div class="wrap" id="main"></div>
+</section>
+
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let me,tab='dash',mode='day',rows=[],totalEmp=0,pf='',q='';
+let anchor=new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Bangkok'});
+const P=s=>new Date(s+'T00:00:00Z'),Y=d=>d.toISOString().slice(0,10);
+const addD=(s,n)=>{const d=P(s);d.setUTCDate(d.getUTCDate()+n);return Y(d)};
+const fmt=(s,o={day:'numeric',month:'short',year:'numeric'})=>P(s).toLocaleDateString('th-TH',{...o,timeZone:'UTC'});
+function range(){const a=P(anchor);if(mode==='day')return[anchor,anchor];
+  if(mode==='week'){const f=addD(anchor,-((a.getUTCDay()+6)%7));return[f,addD(f,6)]}
+  return[anchor.slice(0,8)+'01',Y(new Date(Date.UTC(a.getUTCFullYear(),a.getUTCMonth()+1,0)))]}
+function step(n){if(mode==='day')anchor=addD(anchor,n);else if(mode==='week')anchor=addD(anchor,7*n);else{const a=P(anchor);a.setUTCMonth(a.getUTCMonth()+n,1);anchor=Y(a)}}
+const label=()=>{const[f,t]=range();return mode==='day'?fmt(f):mode==='month'?fmt(f,{month:'long',year:'numeric'}):fmt(f,{day:'numeric',month:'short'})+' – '+fmt(t)};
+const pk=r=>r.pickup_other?r.pickup+': '+r.pickup_other:r.pickup;
+
+async function api(u,o={}){const r=await fetch(u,{credentials:'same-origin',...o});
+  if(r.status===401){showLogin();throw new Error('unauthorized')}
+  const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||'เกิดข้อผิดพลาด');return j}
+const post=(u,b)=>api(u,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});
+
+function showLogin(){$('#app').hidden=true;$('#login').hidden=false}
+async function start(){try{me=await api('/admin/api/me');$('#login').hidden=true;$('#app').hidden=false;
+  $('#who').textContent=me.name+' ('+me.role+')';
+  const t=[['dash','ภาพรวม'],['list','รายชื่อ']];if(me.role==='Admin')t.push(['pick','จุดรับ-ส่ง'],['emp','พนักงาน'],['users','ผู้ใช้'],['purge','ล้างข้อมูล']);
+  $('#tabs').innerHTML=t.map(([k,n])=>`<button data-t="${k}">${n}</button>`).join('');
+  $('#tabs').onclick=e=>{const b=e.target.closest('button');if(b){tab=b.dataset.t;render()}};render()}catch(e){showLogin()}}
+$('#lf').onsubmit=async e=>{e.preventDefault();$('#lm').textContent='';
+  try{await post('/admin/api/login',{email:$('#em').value,password:$('#pw').value});$('#pw').value='';start()}catch(x){$('#lm').textContent=x.message}};
+$('#out').onclick=async e=>{e.preventDefault();await post('/admin/api/logout',{});showLogin()};
+
+async function render(){
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===tab));
+  if(tab==='dash'||tab==='list'){await loadRegs();return}
+  ({pick:viewPick,emp:viewEmp,users:viewUsers,purge:viewPurge})[tab]();
+}
+async function loadRegs(){const[f,t]=range();
+  try{const d=await api(`/admin/api/regs?from=${f}&to=${t}`);rows=d.rows;totalEmp=d.employees}catch(e){return}
+  tab==='dash'?viewDash():viewList()}
+function rangeBar(){return `<div class="card"><div class="rb">
+ <div class="seg" id="seg">${[['day','วัน'],['week','สัปดาห์'],['month','เดือน']].map(([k,n])=>`<button data-m="${k}" class="${mode===k?'on':''}">${n}</button>`).join('')}</div>
+ <div class="nav"><button class="ib" data-s="-1">‹</button><b>${label()}</b><button class="ib" data-s="1">›</button></div>
+ <button class="btn o s" data-a="today">วันนี้</button><span class="sp"></span>
+ <a class="btn s" href="/admin/export.xlsx?from=${range()[0]}&to=${range()[1]}${pf?'&pickup='+encodeURIComponent(pf):''}">ดาวน์โหลด Excel</a>
+ <button class="btn o s" data-a="pdf">ดาวน์โหลด PDF</button></div>`}
+function bindRange(){const m=$('#main');
+  m.onclick=e=>{const b=e.target.closest('button');if(!b)return;
+   if(b.dataset.m){mode=b.dataset.m;loadRegs()}else if(b.dataset.s){step(+b.dataset.s);loadRegs()}
+   else if(b.dataset.a==='today'){anchor=new Date().toLocaleDateString('sv-SE',{timeZone:'Asia/Bangkok'});loadRegs()}
+   else if(b.dataset.a==='pdf')pdf()}}
+function hbars(list){const mx=Math.max(1,...list.map(x=>x[1]));return list.length?list.map(([n,v])=>`<div class="hb"><div class="l"><span>${esc(n)}</span><b>${v}</b></div><div class="t"><i style="width:${v/mx*100}%"></i></div></div>`).join(''):'<p class="empty">ไม่มีข้อมูล</p>'}
+const tally=(f)=>Object.entries(rows.reduce((a,r)=>{const k=f(r);a[k]=(a[k]||0)+1;return a},{})).sort((a,b)=>b[1]-a[1]);
+function viewDash(){
+  const byDay=rows.reduce((a,r)=>{a[r.d]=(a[r.d]||0)+1;return a},{}),days=Object.keys(byDay),peak=days.sort((a,b)=>byDay[b]-byDay[a])[0];
+  const[f,t]=range();const ds=[];for(let d=f;d<=t;d=addD(d,1))ds.push(d);const mx=Math.max(1,...Object.values(byDay));
+  $('#main').innerHTML=rangeBar()+`</div>
+  <div class="stats"><div class="stat m"><b>${rows.length}</b><span>คน-เที่ยว</span></div>
+   <div class="stat"><b>${new Set(rows.map(r=>r.staff_no)).size}</b><span>พนักงาน (ไม่ซ้ำ) จาก ${totalEmp}</span></div>
+   <div class="stat"><b>${days.length?(rows.length/days.length).toFixed(1):'–'}</b><span>เฉลี่ยต่อวัน</span></div>
+   <div class="stat"><b>${peak?byDay[peak]:'–'}</b><span>วันที่มากที่สุด${peak?' ('+fmt(peak,{day:'numeric',month:'short'})+')':''}</span></div></div>
+  <div class="card"><h3>จำนวนผู้ใช้รถรายวัน</h3><div class="bars">${ds.map(d=>`<div title="${fmt(d)}">${byDay[d]?`<em>${byDay[d]}</em>`:''}<i style="height:${(byDay[d]||0)/mx*100}%"></i>${P(d).getUTCDate()}</div>`).join('')}</div></div>
+  <div class="grid g2"><div class="card"><h3>ตามจุดรับ-ส่ง</h3>${hbars(tally(pk))}</div>
+  <div class="card"><h3>10 หน่วยงานที่ใช้มากที่สุด</h3>${hbars(tally(r=>r.org).slice(0,10))}</div></div>`;
+  bindRange()}
+function filtered(){const s=q.toLowerCase();return rows.filter(r=>(!pf||r.pickup===pf)&&(!s||[r.staff_no,r.emp_name,r.org,pk(r),r.phone].join(' ').toLowerCase().includes(s)))}
+function viewList(){
+  const opts=[...new Set(rows.map(r=>r.pickup))];
+  $('#main').innerHTML=rangeBar()+`<div class="rb"><select id="pf" style="flex:1 1 200px;width:auto"><option value="">ทุกจุดรับ-ส่ง</option>${opts.map(o=>`<option ${o===pf?'selected':''}>${esc(o)}</option>`).join('')}</select>
+   <input id="qs" placeholder="ค้นหา รหัส / ชื่อ / หน่วยงาน / โทร" value="${esc(q)}" style="flex:2 1 240px;width:auto"></div><p class="sub" id="cnt"></p>
+   <div class="tw cards"><table><thead><tr><th>วันที่</th><th>จุดรับ-ส่ง</th><th>รหัส</th><th>ชื่อ-นามสกุล</th><th>หน่วยงาน</th><th>โทร</th><th>หมายเหตุ</th></tr></thead><tbody id="tb"></tbody></table></div></div>`;
+  bindRange();const draw=()=>{const f=filtered();$('#cnt').textContent=`แสดง ${f.length} จาก ${rows.length} รายการ`;
+   $('#tb').innerHTML=f.length?f.map(r=>`<tr><td class="nw" data-l="วันที่">${fmt(r.d,{day:'numeric',month:'short'})}</td><td data-l="จุดรับ-ส่ง"><span class="pk">${esc(pk(r))}</span></td><td class="nw" data-l="รหัส">${esc(r.staff_no)}</td><td data-l="ชื่อ"><b>${esc(r.emp_name)}</b></td><td data-l="หน่วยงาน">${esc(r.org)}</td><td class="nw" data-l="โทร">${esc(r.phone)||'-'}</td><td data-l="หมายเหตุ">${esc(r.note)||'-'}</td></tr>`).join(''):'<tr><td colspan="7" class="empty">ไม่มีรายการ</td></tr>'};
+  draw();$('#pf').onchange=e=>{pf=e.target.value;viewList()};$('#qs').oninput=e=>{q=e.target.value;draw()}}
+function pdf(){const f=filtered(),w=window.open('','_blank');if(!w)return alert('กรุณาอนุญาตป๊อปอัป');
+  w.document.write(`<meta charset=utf-8><title>รายชื่อ ${label()}</title><style>body{font-family:'Prompt',sans-serif;font-size:12px}table{border-collapse:collapse;width:100%}th,td{border:1px solid #999;padding:4px 6px;text-align:left}th{background:#e8141c;color:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}</style>
+  <h2>รายชื่อผู้ใช้รถรับ-ส่ง – ${label()}${pf?' – '+esc(pf):''}</h2><p>รวม ${f.length} คน-เที่ยว</p><table><tr><th>วันที่</th><th>จุดรับ-ส่ง</th><th>รหัส</th><th>ชื่อ-นามสกุล</th><th>หน่วยงาน</th><th>โทร</th><th>หมายเหตุ</th></tr>
+  ${f.map(r=>`<tr><td>${fmt(r.d,{day:'numeric',month:'short'})}</td><td>${esc(pk(r))}</td><td>${esc(r.staff_no)}</td><td>${esc(r.emp_name)}</td><td>${esc(r.org)}</td><td>${esc(r.phone)}</td><td>${esc(r.note)}</td></tr>`).join('')}</table>`);
+  w.document.close();setTimeout(()=>w.print(),500)}
+
+async function viewPick(){const l=await api('/admin/api/pickups');
+  $('#main').innerHTML=`<div class="card"><h2>จุดรับ-ส่ง</h2><p class="sub">จุดที่ปิดใช้งานจะไม่แสดงในแบบฟอร์ม แต่ข้อมูลเดิมยังอยู่ · ติ๊ก "ระบุเอง" สำหรับจุด อื่น ๆ</p>
+  <div class="tw"><table><thead><tr><th>ลำดับ</th><th>ชื่อจุด</th><th>เวลา</th><th>ระบุเอง</th><th>เปิดใช้</th><th>ใช้แล้ว</th><th></th></tr></thead><tbody>
+  ${l.map(p=>`<tr data-id="${p.id}"><td style="width:70px"><input type="text" inputmode="numeric" class="s" value="${p.sort}"></td><td><input type="text" class="n" value="${esc(p.name)}"></td><td style="width:120px"><input type="text" class="t" value="${esc(p.time)}"></td>
+  <td><input type="checkbox" class="f" ${p.free_text?'checked':''}></td><td><input type="checkbox" class="a" ${p.active?'checked':''}></td><td>${p.used}</td><td><button class="btn s">บันทึก</button></td></tr>`).join('')}
+  <tr id="np"><td><input type="text" inputmode="numeric" class="s" placeholder="ลำดับ"></td><td><input type="text" class="n" placeholder="ชื่อจุดใหม่"></td><td><input type="text" class="t" placeholder="07:00 น."></td><td><input type="checkbox" class="f"></td><td></td><td></td><td><button class="btn s">เพิ่มจุด</button></td></tr>
+  </tbody></table></div><div class="msg" id="pm"></div></div>`;
+  $('#main').onclick=async e=>{const b=e.target.closest('button');if(!b)return;const tr=b.closest('tr'),g=c=>tr.querySelector(c);
+   const body={sort:g('.s').value,name:g('.n').value,time:g('.t').value,free_text:g('.f').checked,active:tr.id==='np'?true:g('.a').checked};
+   try{tr.id==='np'?await post('/admin/api/pickups',body):await api('/admin/api/pickups/'+tr.dataset.id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});viewPick()}
+   catch(x){$('#pm').className='msg err';$('#pm').textContent=x.message}}}
+async function viewUsers(){const l=await api('/admin/api/users'),opt=r=>['Admin','GA','HR'].map(x=>`<option ${x===r?'selected':''}>${x}</option>`).join('');
+  $('#main').innerHTML=`<div class="card"><h2>ผู้ใช้ระบบ</h2><p class="sub">Admin จัดการได้ทุกส่วน · GA และ HR สิทธิ์เท่ากัน ดูภาพรวมและรายชื่อ ดาวน์โหลดรายงานได้</p>
+  <div class="tw"><table><thead><tr><th>ชื่อ</th><th>อีเมล</th><th>สิทธิ์</th><th>ใช้งาน</th><th></th></tr></thead><tbody>
+  ${l.map(u=>`<tr data-id="${u.id}"><td>${esc(u.name)}</td><td>${esc(u.email)}</td><td><select class="r" style="width:auto;min-height:38px">${opt(u.role)}</select></td><td><input type="checkbox" class="a" ${u.active?'checked':''}></td>
+  <td class="nw"><button class="btn s" data-k="save">บันทึก</button> <button class="btn o s" data-k="pw">รีเซ็ตรหัส</button></td></tr>`).join('')}</tbody></table></div><div class="msg" id="um"></div></div>
+  <div class="card"><h3>เพิ่มผู้ใช้</h3><div class="rb"><input id="un" placeholder="ชื่อ" style="flex:1 1 160px;width:auto"><input id="ue" type="email" placeholder="อีเมล" style="flex:1 1 200px;width:auto">
+  <input id="up" type="password" placeholder="รหัสผ่าน (8 ตัวขึ้นไป)" style="flex:1 1 180px;width:auto"><select id="ur" style="width:auto">${opt('HR')}</select><button class="btn" data-k="add">เพิ่มผู้ใช้</button></div></div>`;
+  const m=$('#um'),put=(id,b)=>api('/admin/api/users/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)});
+  $('#main').onclick=async e=>{const b=e.target.closest('button');if(!b)return;const tr=b.closest('tr');
+   try{if(b.dataset.k==='add'){await post('/admin/api/users',{name:$('#un').value,email:$('#ue').value,password:$('#up').value,role:$('#ur').value});viewUsers()}
+    else if(b.dataset.k==='save'){await put(tr.dataset.id,{role:tr.querySelector('.r').value,active:tr.querySelector('.a').checked});m.className='msg ok';m.textContent='บันทึกแล้ว'}
+    else if(b.dataset.k==='pw'){const p=prompt('รหัสผ่านใหม่ (อย่างน้อย 8 ตัวอักษร)');if(!p)return;await put(tr.dataset.id,{password:p});m.className='msg ok';m.textContent='เปลี่ยนรหัสผ่านแล้ว'}}
+   catch(x){m.className='msg err';m.textContent=x.message}}}
+async function viewEmp(){const s=await api('/admin/api/employees');
+  $('#main').innerHTML=`<div class="card"><h2>รายชื่อพนักงาน</h2><p class="sub">ใช้งานอยู่ ${s.active} คน (ทั้งหมด ${s.total}) · อัปโหลดไฟล์ Excel (คอลัมน์ Staff_No, NameTHA, Org_Desc, Post_Desc)</p>
+  <input type="file" id="fx" accept=".xlsx" style="border-radius:14px;padding:8px"><label style="display:flex;gap:8px;align-items:center;margin:12px 0"><input type="checkbox" id="dz"> ปิดใช้งานพนักงานที่ไม่มีในไฟล์นี้ (เช่น ลาออก)</label>
+  <button class="btn" id="imp">นำเข้ารายชื่อ</button><div class="msg" id="em2"></div></div>`;
+  $('#imp').onclick=async()=>{const f=$('#fx').files[0],m=$('#em2');if(!f){m.className='msg err';m.textContent='เลือกไฟล์ .xlsx ก่อน';return}
+   m.className='msg';m.textContent='กำลังนำเข้า...';
+   try{const r=await api('/admin/api/employees/import?deactivate='+($('#dz').checked?1:0),{method:'POST',headers:{'Content-Type':'application/octet-stream'},body:await f.arrayBuffer()});
+    m.className='msg ok';m.textContent=`นำเข้าแล้ว ${r.imported} คน${r.deactivated?` · ปิดใช้งาน ${r.deactivated} คน`:''}`}catch(x){m.className='msg err';m.textContent=x.message}}}
+function viewPurge(){$('#main').innerHTML=`<div class="card"><h2>ล้างข้อมูลการลงทะเบียน</h2><p class="sub">ใช้ล้างข้อมูลทดสอบก่อนเปิดใช้งานจริง หรือหลังจบสถานการณ์ รายชื่อพนักงาน จุดรับ-ส่ง และผู้ใช้จะไม่ถูกลบ</p>
+  <label style="display:flex;gap:8px;align-items:center"><input type="radio" name="sc" value="r" checked> เฉพาะช่วงวันที่</label>
+  <div class="rb" style="margin:8px 0"><input type="date" id="pf1" style="flex:1;width:auto" value="${range()[0]}"><input type="date" id="pt1" style="flex:1;width:auto" value="${range()[1]}"></div>
+  <label style="display:flex;gap:8px;align-items:center;margin-bottom:12px"><input type="radio" name="sc" value="a"> ทั้งหมดทุกวัน</label>
+  <button class="btn o" id="pv">ตรวจจำนวนที่จะถูกลบ</button><div class="msg" id="pm"></div>
+  <label style="font-size:.88rem">พิมพ์คำว่า <b>ล้างข้อมูล</b> เพื่อยืนยัน</label><input id="cf" style="margin:6px 0 12px"><button class="btn" id="pd">ลบข้อมูลถาวร</button></div>`;
+  const body=()=>document.querySelector('[name=sc]:checked').value==='a'?{all:true}:{from:$('#pf1').value,to:$('#pt1').value},m=$('#pm');
+  $('#pv').onclick=async()=>{try{const r=await post('/admin/api/purge/preview',body());m.className='msg';m.textContent=`จะลบ ${r.count} รายการ`}catch(x){m.className='msg err';m.textContent=x.message}};
+  $('#pd').onclick=async()=>{try{const r=await post('/admin/api/purge',{...body(),confirm:$('#cf').value.trim()});m.className='msg ok';m.textContent=`ลบแล้ว ${r.deleted} รายการ`;$('#cf').value=''}catch(x){m.className='msg err';m.textContent=x.message}}}
+start();
+</script></body></html>
